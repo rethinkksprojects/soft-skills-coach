@@ -1,0 +1,122 @@
+@font-face {
+    font-family: Inter;
+    src: url('fonts/web/InterDisplay-Regular.woff2') format('woff2');
+    src: url('fonts/web/InterDisplay-Bold.woff2') format('woff2');
+    src: url('fonts/web/InterDisplay-SemiBold.woff2') format('woff2');  
+    src: url('fonts/web/Inter-Regular.woff2') format('woff2');
+    src: url('fonts/web/Inter-Bold.woff2') format('woff2');
+    src: url('fonts/web/Inter-SemiBold.woff2')format('woff2');
+}
+body {
+    font-family: Inter, sans-serif; 
+    background-color: rgb(225, 225, 255);
+    color:rgb(16, 0, 31);
+}
+.navigation {
+    text-size-adjust: auto;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style-type: none;
+    background-color: rgb(157, 155, 255);
+    outline-color: blue;
+    outline-width: 0px;
+    padding: 25px;
+    margin-bottom: 25px;
+    grid-template-columns: repeat(4, auto);
+    font-family: Inter, sans-serif;
+    list-style-type: none;
+}
+
+.heading {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+
+    .milo-image {
+        float: left;
+        margin-right: 20px;
+    }
+
+    .heading::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+.Main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: center;
+    text-align: center;
+}
+
+.scenarios {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: 300px;
+    width: 900px;
+    gap: 1px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    justify-items: center;
+    align-items: center;
+}
+
+.grid-item {
+    font-weight: bold;
+    font-size: auto;
+    display: grid;
+    background-image: linear-gradient(to bottom, rgb(255, 234, 234), rgb(255, 151, 151));
+    outline-width: 2px;
+    padding: 1em;
+    box-shadow: rgb(0, 88, 88);
+    border-radius: 10px;
+    position: center;
+    text-align: center;
+    max-width: 120px;
+    max-height: 40px;
+    box-shadow: rgb(255, 133, 133) 4px 8px 16px;
+}
+
+.methods {
+    text-align: left;
+    display: inline-block;
+    margin-top: 0;
+}
+
+.methodology {
+    text-align: left;
+    display: inline-block;
+    margin-top: 0;
+}
+
+/* AI GENERATED CODE */
+
+.character-ai-embed {
+    align-content: center;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    /* This helps with some browsers */
+    overflow-anchor: none;
+}
+
+/* Optional: Hide scrollbar until needed */
+html {
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+html::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
