@@ -1,11 +1,64 @@
 // All JavaScript code is AI-generated //
+
+(function() {
+    // ========== IMMEDIATE SCROLL CONTROL ==========
+    // Force scroll to top as soon as script loads
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    
+    // Prevent scrolling during initial load
+    document.documentElement.style.scrollBehavior = 'auto';
+    document.body.style.overflow = 'hidden';
+})();
+
 document.addEventListener('DOMContentLoaded', function() {
+    // ========== ENSURE START AT TOP ==========
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    
+    // Handle browser back/forward navigation
+    window.addEventListener('pageshow', function(event) {
+        if(event.persisted) {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+    });
+    
+    // ========== PREVENT EMBED AUTO-SCROLL ==========
+    let scrollLock = true;
+    const embed = document.querySelector('.character-ai-embed');
+    
+    // Lock scroll for first 3 seconds
+    window.addEventListener('scroll', function() {
+        if(scrollLock && window.pageYOffset > 50) {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+    }, { passive: false });
+    
+    // Release scroll lock after embed loads
+    if(embed) {
+        embed.addEventListener('load', function() {
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(() => {
+                    scrollLock = false;
+                    document.body.style.overflow = 'auto';
+                    document.documentElement.style.scrollBehavior = 'smooth';
+                }, 500);
+            }, 1000);
+        });
+    }
+    
+    // Fallback: Release lock after 4 seconds max
+    setTimeout(() => {
+        scrollLock = false;
+        document.body.style.overflow = 'auto';
+        document.documentElement.style.scrollBehavior = 'smooth';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 4000);
+    
     // ========== 1. SMOOTH SCROLLING FOR NAVIGATION ==========
     const navLinks = document.querySelectorAll('.navigation a');
     
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Only apply smooth scrolling for same-page anchors
             if(this.getAttribute('href').startsWith('#')) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
@@ -18,66 +71,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             }
-            // External links will behave normally
         });
     });
-
-    // ========== START AT TOP ==========
-    // Scroll to top immediately
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    
-    // One more check after everything loads
-
-    let userHasScrolled = false;
-    window.addEventListener('load', function() {
-        if(window.pageYOffset > 0) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        window.addEventListener('scroll', function() {
-            if(!userHasScrolled && window.pageYOffset > 10) {
-                userHasScrolled = true;
-                document.body.classList.add('user-has-scrolled');
-            }
-            }, { passive: true });
-
-        window.addEventListener('scroll', function() {
-            if(!userHasScrolled && window.pageYOffset > 10) {
-                userHasScrolled = true;
-                document.body.classList.add('user-has-scrolled');
-            }
-        }, { passive: true });
-
-        // Reset scroll position after embed loads
-        setTimeout(() => {
-            window.scrollTo(0, 0);
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-        }, 1000); // Give embed time to load
-
-        // Reset scroll position after embed loads
-        setTimeout(() => {
-            window.scrollTo(0, 0);
-            document.documentElement.scrollTop = 0;
-            document.body.scrollTop = 0;
-        }, 1000); // Give embed time to load
-
-        setTimeout(() => {
-            scrollLock = false;
-        }, 2000);
-
-    });
-
-    
-    
-    // Rest of your existing code...
 
     // ========== 2. ANIMATED SCENARIO CARDS ==========
     const scenarioCards = document.querySelectorAll('.grid-item');
     
-    // Add hover animation to scenario cards
     scenarioCards.forEach(card => {
-        // Add initial state
         card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
         
         card.addEventListener('mouseenter', function() {
@@ -94,10 +94,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ========== 3. STAGGERED FADE-IN ANIMATION ==========
-    // Add fade-in class to body for smooth page load
     document.body.classList.add('fade-in');
     
-    // Create CSS for fade-in (we'll inject it)
     const fadeInCSS = `
         @keyframes fadeInUp {
             from {
@@ -134,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .character-ai-embed { animation-delay: 1.8s; }
     `;
     
-    // Inject the CSS
     const style = document.createElement('style');
     style.textContent = fadeInCSS;
     document.head.appendChild(style);
@@ -146,18 +143,19 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', function() {
         const currentScrollY = window.scrollY;
         
-        // Hide nav on scroll down, show on scroll up
-        if(currentScrollY > lastScrollY && currentScrollY > 100) {
-            navigationBar.style.transform = 'translateY(-100%)';
-        } else {
-            navigationBar.style.transform = 'translateY(0)';
-        }
-        
-        // Add shadow when scrolled
-        if(currentScrollY > 10) {
-            navigationBar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-        } else {
-            navigationBar.style.boxShadow = 'none';
+        // Only run this if scroll is unlocked
+        if(!scrollLock) {
+            if(currentScrollY > lastScrollY && currentScrollY > 100) {
+                navigationBar.style.transform = 'translateY(-100%)';
+            } else {
+                navigationBar.style.transform = 'translateY(0)';
+            }
+            
+            if(currentScrollY > 10) {
+                navigationBar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                navigationBar.style.boxShadow = 'none';
+            }
         }
         
         lastScrollY = currentScrollY;
@@ -179,7 +177,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         miloImage.addEventListener('click', function() {
-            // Gentle bounce effect on click
             this.style.transform = 'scale(0.95)';
             setTimeout(() => {
                 this.style.transform = 'scale(1.05)';
@@ -194,21 +191,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const characterEmbed = document.querySelector('.character-ai-embed');
     
     if(characterEmbed) {
-        // Add loading state
         characterEmbed.style.opacity = '0';
         characterEmbed.style.transition = 'opacity 0.5s ease';
         
-        // Simulate loading (since embed loads externally)
         setTimeout(() => {
             characterEmbed.style.opacity = '1';
         }, 500);
         
-        // Add border animation
         characterEmbed.style.borderRadius = '12px';
         characterEmbed.style.overflow = 'hidden';
         characterEmbed.style.boxShadow = '0 10px 40px rgba(157, 155, 255, 0.3)';
         
-        // Pulsing border effect
         setInterval(() => {
             characterEmbed.style.boxShadow = 
                 `0 10px 40px ${Date.now() % 2000 < 1000 ? 
@@ -235,17 +228,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Start typing after page loads
         setTimeout(typeWriter, 800);
     }
 
     // ========== 8. SCROLL PROGRESS INDICATOR ==========
-    // Create progress bar
     const progressBar = document.createElement('div');
     progressBar.className = 'scroll-progress';
     document.body.appendChild(progressBar);
     
-    // Add CSS for progress bar
     const progressCSS = `
         .scroll-progress {
             position: fixed;
@@ -263,16 +253,16 @@ document.addEventListener('DOMContentLoaded', function() {
     progressStyle.textContent = progressCSS;
     document.head.appendChild(progressStyle);
     
-    // Update progress on scroll
     window.addEventListener('scroll', () => {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        progressBar.style.width = scrolled + '%';
+        if(!scrollLock) {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+        }
     });
 
     // ========== 9. INTERACTIVE BACKGROUND PATTERN ==========
-    // Add subtle floating shapes in background
     const backgroundShapes = document.createElement('div');
     backgroundShapes.className = 'background-shapes';
     document.body.insertBefore(backgroundShapes, document.body.firstChild);
@@ -330,16 +320,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ========== 10. RESPONSIVE EMBED ADJUSTMENT ==========
     function adjustEmbedSize() {
-        if(window.innerWidth < 1100) {
+        if(characterEmbed && window.innerWidth < 1100) {
             characterEmbed.width = Math.min(800, window.innerWidth - 40);
             characterEmbed.height = 500;
-        } else {
+        } else if(characterEmbed) {
             characterEmbed.width = 1000;
             characterEmbed.height = 700;
         }
     }
     
-    // Adjust on load and resize
     window.addEventListener('load', adjustEmbedSize);
     window.addEventListener('resize', adjustEmbedSize);
 
@@ -363,9 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const message = `Try practicing "${textToCopy}" with Milo!\n${scenarioInfo[textToCopy] || ''}`;
             
-            // Copy to clipboard
             navigator.clipboard.writeText(message).then(() => {
-                // Visual feedback
                 const originalText = this.textContent;
                 this.textContent = 'Copied! ✓';
                 this.style.background = 'linear-gradient(to bottom, #c8ffc8, #90ee90)';
@@ -378,147 +365,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // ========== 12. PAGE VISIT COUNTER (LOCAL) ==========
+    // ========== 12. PAGE VISIT COUNTER ==========
     if(localStorage.getItem('miloVisits')) {
         const visits = parseInt(localStorage.getItem('miloVisits')) + 1;
         localStorage.setItem('miloVisits', visits.toString());
     } else {
         localStorage.setItem('miloVisits', '1');
     }
-    
-    // Optional: Display in console
-    console.log(`👋 Welcome to Milo's Soft Skills Chatbot! Visit #${localStorage.getItem('miloVisits')}`);
-
-    // ========== COMPLETE SCROLL CONTROL ==========
-(function() {
-    // Disable all scrolling initially
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    
-    // Store original scroll position
-    let originalScrollTop = window.pageYOffset;
-    
-    // Force stay at top every 100ms for first 3 seconds
-    const scrollInterval = setInterval(() => {
-        if(window.pageYOffset > 10) {
-            window.scrollTo({
-                top: 0,
-                behavior: 'instant'
-            });
-        }
-    }, 100);
-    
-    // Re-enable scrolling after page is stable
-    const enableScrolling = () => {
-        clearInterval(scrollInterval);
-        document.body.style.overflow = 'auto';
-        document.documentElement.style.overflow = 'auto';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-    
-    // Enable after 3 seconds OR when user tries to scroll
-    setTimeout(enableScrolling, 3000);
-    
-    window.addEventListener('wheel', enableScrolling, { once: true });
-    window.addEventListener('touchmove', enableScrolling, { once: true });
-    window.addEventListener('keydown', enableScrolling, { once: true });
-})();
-
-    // Debug: Log what's causing scroll events
-let lastScrollTop = 0;
-window.addEventListener('scroll', function() {
-    const currentScroll = window.pageYOffset;
-    
-    if(currentScroll > lastScrollTop + 50) { // Large jump detected
-        console.log('Large scroll detected! From:', lastScrollTop, 'to:', currentScroll);
-        
-        // Check what element is at that position
-        const elements = document.elementsFromPoint(0, currentScroll);
-        console.log('Elements at scroll position:', elements);
-    }
-    
-    lastScrollTop = currentScroll;
 });
 
-// Check for elements that might be auto-focusing
-document.addEventListener('focusin', function(e) {
-    console.log('Element focused:', e.target);
-    if(e.target.tagName === 'IFRAME') {
-        console.warn('Iframe focused - this might cause scrolling!');
-    }
-});
-
-// ========== COMPLETE SCROLL CONTROL ==========
-(function() {
-    // Disable all scrolling initially
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    
-    // Store original scroll position
-    let originalScrollTop = window.pageYOffset;
-    
-    // Force stay at top every 100ms for first 3 seconds
-    const scrollInterval = setInterval(() => {
-        if(window.pageYOffset > 10) {
-            window.scrollTo({
-                top: 0,
-                behavior: 'instant'
-            });
-        }
-    }, 100);
-    
-    // Re-enable scrolling after page is stable
-    const enableScrolling = () => {
-        clearInterval(scrollInterval);
-        document.body.style.overflow = 'auto';
-        document.documentElement.style.overflow = 'auto';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-    
-    // Enable after 3 seconds OR when user tries to scroll
-    setTimeout(enableScrolling, 3000);
-    
-    window.addEventListener('wheel', enableScrolling, { once: true });
-    window.addEventListener('touchmove', enableScrolling, { once: true });
-    window.addEventListener('keydown', enableScrolling, { once: true });
-})();
-
-// ========== FIX AUTO-SCROLL TO BOTTOM ==========
-// 1. Start at top
-window.scrollTo(0, 0);
-
-// 2. Wait for DOM, then lock scroll
-document.addEventListener('DOMContentLoaded', function() {
-    document.body.style.overflow = 'hidden';
-    
-    // 3. Reset any iframe-related scroll
-    const iframe = document.querySelector('.character-ai-embed');
-    if(iframe) {
-        iframe.addEventListener('load', function() {
-            setTimeout(() => {
-                window.scrollTo({ top: 0, behavior: 'instant' });
-            }, 500);
-        });
-    }
-    
-    // 4. Re-enable scrolling after everything settles
-    setTimeout(() => {
-        document.body.style.overflow = 'auto';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 2000);
-});
-
-// 5. Catch any late scroll events
-window.addEventListener('scroll', function() {
-    if(window.pageYOffset > 100) {
-        console.log('Unexpected scroll detected, resetting...');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-});
-
-});
-
-// ========== 13. ADDITIONAL CSS ENHANCEMENTS (INJECTED) ==========
+// ========== 13. ADDITIONAL CSS ENHANCEMENTS ==========
 const additionalCSS = `
     /* Enhanced navigation */
     .navigation {
@@ -593,9 +449,18 @@ const additionalCSS = `
             transition-duration: 0.01ms !important;
         }
     }
+    
+    /* Prevent iframe scroll issues */
+    html, body {
+        overflow-anchor: none;
+    }
+    
+    .character-ai-embed {
+        display: block;
+        margin: 0 auto;
+    }
 `;
 
-// Inject additional CSS
 const additionalStyle = document.createElement('style');
 additionalStyle.textContent = additionalCSS;
 document.head.appendChild(additionalStyle);
@@ -610,6 +475,11 @@ console.log(`
     ║                                                  ║
     ╚══════════════════════════════════════════════════╝
     
-    Thanks for checking out Milo! Try clicking on the
-    scenario cards or hovering over Milo's image!
+    🔒 Scroll lock active for 3 seconds to prevent
+       auto-scroll from Character.ai embed
+    
+    🎯 Page will always start at top
+    ✨ Try clicking on scenario cards!
+    
+    Visit count: ${localStorage.getItem('miloVisits') || '1'}
 `);
