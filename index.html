@@ -57,10 +57,20 @@
             <h3>Now, you may chat with Milo on character.ai. Enjoy!</h3>
             <p>P.S: You may need to sign in to character.ai to use the chatbot.</p>
 
-            <embed class= "character-ai-embed" src="https://character.ai/chat/0-3VMxFMPvgqd0hGUdP-nKeDqDUJGhKGJkGMMJ4fQoQ" width="1000" height="700"></embed>
+            <!-- Change your embed to this: -->
+            <iframe 
+                class="character-ai-embed"
+                src="https://character.ai/chat/0-3VMxFMPvgqd0hGUdP-nKeDqDUJGhKGJkGMMJ4fQoQ"
+                width="1000" 
+                height="700"
+                loading="lazy"  <!-- Important! -->
+                onload="window.scrollTo(0,0)"  <!-- Reset scroll when loaded -->
+                style="border: none;"
+            ></iframe>
         </main>
 
         <script src="script/script.js"></script>
 
     </body>
+
 </html>
