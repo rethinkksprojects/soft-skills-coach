@@ -29,6 +29,11 @@ body {
     list-style-type: none;
 }
 
+a {
+    text-decoration: none;
+    color: rgb(135, 221, 255);
+}
+
 .heading {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -147,3 +152,4 @@ body:not(.user-has-scrolled) {
 body.user-has-scrolled {
     overflow: auto;
 }
+
