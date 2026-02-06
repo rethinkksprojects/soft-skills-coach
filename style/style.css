@@ -31,7 +31,7 @@ body {
 
 a {
     text-decoration: none;
-    color: rgb(135, 221, 255);
+    color: rgb(16, 0, 31); /* Make all links dark */
 }
 
 .heading {
@@ -152,4 +152,5 @@ body:not(.user-has-scrolled) {
 body.user-has-scrolled {
     overflow: auto;
 }
+
 
